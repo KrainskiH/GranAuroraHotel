@@ -1,2 +1,0 @@
-O código estára aqui.
-@
