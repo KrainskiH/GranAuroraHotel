@@ -18,3 +18,5 @@ Interface
 📜 Logs de operações realizadas
 🔄 Controle de versão utilizando Git
 🛠️ Tecnologias Utilizadas
+
+By Victória and Henrique.
