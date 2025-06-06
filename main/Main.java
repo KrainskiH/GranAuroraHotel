@@ -1,7 +1,8 @@
+package main;
+
 // Importa a classe Menu, que está na pasta 'view'
 
 import view.Menu;
-package main;
 // Classe principal do programa
 public class Main {
 
