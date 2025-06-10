@@ -11,7 +11,7 @@ public QuartoLuxo(int numero) {
     }
     @Override
     public String getDescricao() {
-        return "Suíte de luxo com cama king-size, ar-condicionado, TV 50\", frigobar e banheira de hidromassagem.";
+        return "Suíte de luxo com cama king-size, ar-condicionado, TV 50\, frigobar, mobilia sofisticada e elegante, um banheiro exclusivo e refinado com banheira de hidromassagem.";
     }
     @Override
     public double getPrecoDiaria() {
