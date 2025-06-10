@@ -10,7 +10,6 @@ public class QuartoController {
     private QuartoService quartoService = new QuartoService();
 public void gerenciarQuartos(Scanner scanner) {
     int opcao = -1;
-
     do {
         System.out.println("\n-- Menu de Quartos --");
         System.out.println("1 - Listar Todos os Quartos");
@@ -18,11 +17,9 @@ public void gerenciarQuartos(Scanner scanner) {
         System.out.println("3 - Ver Detalhes de um Quarto");
         System.out.println("0 - Voltar ao Menu Principal");
         System.out.print("Escolha uma opção: ");
-
     try {
         opcao = scanner.nextInt();
         scanner.nextLine(); // Limpa o buffer
-
     switch (opcao) {
         case 1:
         listarTodosOsQuartos();
@@ -44,10 +41,8 @@ public void gerenciarQuartos(Scanner scanner) {
         scanner.nextLine();
         opcao = -1;
             }
-
     } while (opcao != 0);
      }
-
     private void listarTodosOsQuartos() {
         System.out.println("\n-- Lista de Todos os Quartos --");
         List<Quarto> quartos = quartoService.listarTodosOsQuartos();
@@ -57,7 +52,6 @@ public void gerenciarQuartos(Scanner scanner) {
             quartos.forEach(System.out::println); //Usa o método toString() do Quarto
         }
     }
-
     private void listarQuartosDisponiveis() {
         System.out.println("\n-- Quartos Disponíveis --");
         List<Quarto> quartosDisponiveis = quartoService.listarQuartosDisponiveis();
@@ -67,11 +61,9 @@ public void gerenciarQuartos(Scanner scanner) {
             quartosDisponiveis.forEach(System.out::println);
         }
     }
-
     private void verDetalhesQuarto(Scanner scanner) {
         System.out.println("\n-- Detalhes do Quarto --");
         System.out.print("Digite o número do quarto que deseja ver: ");
-
     try {
         int numero = scanner.nextInt();
         scanner.nextLine(); // Limpa o buffer
