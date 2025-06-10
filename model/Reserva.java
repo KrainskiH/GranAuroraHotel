@@ -1,64 +1,58 @@
-package model;
+package controller;
 
-public class Reserva {
-    private int id;
-    private int idCliente;
-    private int idQuarto;
-    private String dataEntrada;
-    private String dataSaida;
+import model.Reserva;
+import java.util.ArrayList;
 
-    public Reserva(int id, int idCliente, int idQuarto, String dataEntrada, String dataSaida) {
-        this.id = id;
-        this.idCliente = idCliente;
-        this.idQuarto = idQuarto;
-        this.dataEntrada = dataEntrada;
-        this.dataSaida = dataSaida;
+public class ReservaController {
+    private ArrayList<Reserva> reservas = new ArrayList<>();
+    private int proximoId = 1;
+
+    public void cadastrarReserva(int idCliente, int idQuarto, String entrada, String saida) {
+        Reserva r = new Reserva(proximoId, idCliente, idQuarto, entrada, saida);
+        reservas.add(r);
+        proximoId++;
+        System.out.println("Reserva cadastrada com sucesso!");
     }
 
-    public int getId() {
-        return id;
+    public void listarReservas() {
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva cadastrada.");
+        } else {
+            for (Reserva r : reservas) {
+                System.out.println(r);
+            }
+        }
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Reserva buscarPorId(int id) {
+        for (Reserva r : reservas) {
+            if (r.getId() == id) {
+                return r;
+            }
+        }
+        return null;
     }
 
-    public int getIdQuarto() {
-        return idQuarto;
+    public void editarReserva(int id, int novoCliente, int novoQuarto, String novaEntrada, String novaSaida) {
+        Reserva r = buscarPorId(id);
+        if (r != null) {
+            r.setIdCliente(novoCliente);
+            r.setIdQuarto(novoQuarto);
+            r.setDataEntrada(novaEntrada);
+            r.setDataSaida(novaSaida);
+            System.out.println("Reserva atualizada com sucesso!");
+        } else {
+            System.out.println("Reserva não encontrada.");
+        }
     }
 
-    public String getDataEntrada() {
-        return dataEntrada;
-    }
-
-    public String getDataSaida() {
-        return dataSaida;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public void setIdQuarto(int idQuarto) {
-        this.idQuarto = idQuarto;
-    }
-
-    public void setDataEntrada(String dataEntrada) {
-        this.dataEntrada = dataEntrada;
-    }
-
-    public void setDataSaida(String dataSaida) {
-        this.dataSaida = dataSaida;
-    }
-
-    @Override
-    public String toString() {
-        return "Reserva{" +
-                "id=" + id +
-                ", idCliente=" + idCliente +
-                ", idQuarto=" + idQuarto +
-                ", entrada='" + dataEntrada + '\'' +
-                ", saída='" + dataSaida + '\'' +
-                '}';
+    public void excluirReserva(int id) {
+        Reserva r = buscarPorId(id);
+        if (r != null) {
+            reservas.remove(r);
+            System.out.println("Reserva excluída com sucesso!");
+        } else {
+            System.out.println("Reserva não encontrada.");
+        }
     }
 }
