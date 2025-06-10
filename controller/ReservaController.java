@@ -1,6 +1,6 @@
-package controlador;
+package controller;
 
-import modelo.Reserva;
+import model.Reserva;
 import java.util.ArrayList;
 
 public class ReservaController {
