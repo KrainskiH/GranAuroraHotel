@@ -1,9 +1,9 @@
 package controller;
 
+import model.Quarto; 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import model.Quarto;
 import service.QuartoService;
 
 public class QuartoController {

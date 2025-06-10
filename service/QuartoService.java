@@ -3,7 +3,7 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import model.Quarto;
+import model.Quarto; 
 import model.QuartoLuxo;
 import model.QuartoSimples;
 import model.QuartoStandard;
