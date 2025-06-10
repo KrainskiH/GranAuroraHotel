@@ -2,7 +2,7 @@ package model;
 
 public class QuartoStandard extends Quarto {
     private static final double PRECO_DIARIA = 200.50;
-    public QuartoStandard(int numero) {
+public QuartoStandard(int numero) {
     super(numero);
     }
     @Override
