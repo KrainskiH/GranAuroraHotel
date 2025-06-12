@@ -71,7 +71,6 @@ public class ReservaController {
     public void cadastrarReserva(int idCliente, int idQuarto, String entrada, String saida) {
         Reserva r = new Reserva(proximoId, idCliente, idQuarto, entrada, saida);
         reservas.add(r);
-        proximoId++;
         System.out.println("Reserva cadastrada com sucesso!");
         Log.registrar("Reserva cadastrada: ID " + r.getId()); 
         proximoId++;
