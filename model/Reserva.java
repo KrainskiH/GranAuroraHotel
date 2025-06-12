@@ -2,14 +2,14 @@ package model;
 
 public class Reserva {
     private int id;
-    private int idCliente;
+    private String cpfCliente;
     private int idQuarto;
     private String dataEntrada;
     private String dataSaida;
 
-    public Reserva(int id, int idCliente, int idQuarto, String dataEntrada, String dataSaida) {
+   public Reserva(int id, String cpfCliente, int idQuarto, String dataEntrada, String dataSaida) {
         this.id = id;
-        this.idCliente = idCliente;
+        this.cpfCliente = cpfCliente;
         this.idQuarto = idQuarto;
         this.dataEntrada = dataEntrada;
         this.dataSaida = dataSaida;
@@ -52,10 +52,10 @@ public class Reserva {
     }
 
     @Override
-    public String toString() {
+   public String toString() {
         return "Reserva{" +
                 "id=" + id +
-                ", idCliente=" + idCliente +
+                ", cpfCliente='" + cpfCliente + '\'' +
                 ", idQuarto=" + idQuarto +
                 ", entrada='" + dataEntrada + '\'' +
                 ", saída='" + dataSaida + '\'' +
