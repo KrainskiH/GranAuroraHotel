@@ -13,8 +13,7 @@ public class ArquivoUtil {
     public static void salvarReservas(List<Reserva> reservas) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_RESERVAS))) {
             for (Reserva r : reservas) {
-               
-                writer.write(r.getId() + ";" + r.getCpfCliente() + ";" + r.getIdQuarto() + ";" +
+                writer.write(r.getId() + ";" + r.getCpfCliente() + ";" + r.getIdQuarto() + ";" + 
                              r.getDataEntrada() + ";" + r.getDataSaida());
                 writer.newLine();
             }
