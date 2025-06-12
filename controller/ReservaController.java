@@ -72,6 +72,8 @@ public class ReservaController {
         reservas.add(r);
         proximoId++;
         System.out.println("Reserva cadastrada com sucesso!");
+        Log.registrar("Reserva cadastrada: ID " + r.getId()); 
+        proximoId++;
     }
 
     public void listarReservas() {
@@ -101,6 +103,7 @@ public class ReservaController {
             r.setDataEntrada(novaEntrada);
             r.setDataSaida(novaSaida);
             System.out.println("Reserva atualizada com sucesso!");
+            Log.registrar("Reserva editada: ID " + r.getId()); 
         } else {
             System.out.println("Reserva não encontrada.");
         }
@@ -111,6 +114,7 @@ public class ReservaController {
         if (r != null) {
             reservas.remove(r);
             System.out.println("Reserva excluída com sucesso!");
+            Log.registrar("Reserva excluída: ID " + r.getId());
         } else {
             System.out.println("Reserva não encontrada.");
         }
