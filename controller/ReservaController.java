@@ -1,6 +1,7 @@
 package controller;
                                      
 import utils.Log;
+import utils.ArquivoUtil;
 import model.Reserva;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -74,6 +75,7 @@ public class ReservaController {
         System.out.println("Reserva cadastrada com sucesso!");
         Log.registrar("Reserva cadastrada: ID " + r.getId()); 
         proximoId++;
+       ArquivoUtil.salvarReservas(reservas);
     }
 
     public void listarReservas() {
@@ -104,6 +106,7 @@ public class ReservaController {
             r.setDataSaida(novaSaida);
             System.out.println("Reserva atualizada com sucesso!");
             Log.registrar("Reserva editada: ID " + r.getId()); 
+            ArquivoUtil.salvarReservas(reservas);
         } else {
             System.out.println("Reserva não encontrada.");
         }
@@ -115,6 +118,7 @@ public class ReservaController {
             reservas.remove(r);
             System.out.println("Reserva excluída com sucesso!");
             Log.registrar("Reserva excluída: ID " + r.getId());
+            ArquivoUtil.salvarReservas(reservas);
         } else {
             System.out.println("Reserva não encontrada.");
         }
