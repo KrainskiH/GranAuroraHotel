@@ -26,8 +26,8 @@ public class ReservaController {
 
         switch (opcao) {
             case 1:
-                System.out.print("ID do cliente: ");
-                int clienteId = scanner.nextInt();
+                System.out.print("CPF do cliente: ");
+                String cpfCliente = scanner.nextLine();
                 System.out.print("ID do quarto: ");
                 int quartoId = scanner.nextInt();
                 scanner.nextLine();
@@ -43,8 +43,8 @@ public class ReservaController {
             case 3:
                 System.out.print("ID da reserva: ");
                 int idEditar = scanner.nextInt();
-                System.out.print("Novo ID do cliente: ");
-                int novoCliente = scanner.nextInt();
+                System.out.print("Novo CPF do cliente: ");
+                 String novoCpf = scanner.nextLine(); 
                 System.out.print("Novo ID do quarto: ");
                 int novoQuarto = scanner.nextInt();
                 scanner.nextLine();
@@ -52,8 +52,8 @@ public class ReservaController {
                 String novaEntrada = scanner.nextLine();
                 System.out.print("Nova data de saída: ");
                 String novaSaida = scanner.nextLine();
-                editarReserva(idEditar, novoCliente, novoQuarto, novaEntrada, novaSaida);
-                break;
+                editarReserva(idEditar, novoCpf, novoQuarto, novaEntrada, novaSaida); 
+                    break;
             case 4:
                 System.out.print("ID da reserva a excluir: ");
                 int idExcluir = scanner.nextInt();
@@ -99,7 +99,7 @@ public class ReservaController {
     public void editarReserva(int id, int novoCliente, int novoQuarto, String novaEntrada, String novaSaida) {
         Reserva r = buscarPorId(id);
         if (r != null) {
-            r.setIdCliente(novoCliente);
+            r.setCpfCliente(novoCpf);
             r.setIdQuarto(novoQuarto);
             r.setDataEntrada(novaEntrada);
             r.setDataSaida(novaSaida);
