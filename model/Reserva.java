@@ -7,7 +7,7 @@ public class Reserva {
     private String dataEntrada;
     private String dataSaida;
 
-   public Reserva(int id, String cpfCliente, int idQuarto, String dataEntrada, String dataSaida) {
+    public Reserva(int id, String cpfCliente, int idQuarto, String dataEntrada, String dataSaida) {
         this.id = id;
         this.cpfCliente = cpfCliente;
         this.idQuarto = idQuarto;
@@ -19,8 +19,8 @@ public class Reserva {
         return id;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public String getCpfCliente() {
+        return cpfCliente;
     }
 
     public int getIdQuarto() {
@@ -35,8 +35,8 @@ public class Reserva {
         return dataSaida;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCpfCliente(String cpfCliente) {
+        this.cpfCliente = cpfCliente;
     }
 
     public void setIdQuarto(int idQuarto) {
@@ -52,7 +52,7 @@ public class Reserva {
     }
 
     @Override
-   public String toString() {
+    public String toString() {
         return "Reserva{" +
                 "id=" + id +
                 ", cpfCliente='" + cpfCliente + '\'' +
