@@ -28,4 +28,16 @@ public abstract class Quarto {
     public abstract String getTipo();
     public abstract String getDescricao();
     public abstract double getPrecoDiaria();
+
+@Override
+public String toString() {
+    return String.format(
+        "%s - Número: %d | Status: %s | R$ %.2f | %s",
+        getTipo(),
+        numero,
+        ocupado ? "Ocupado" : "Disponível",
+        getPrecoDiaria(),
+        getDescricao()
+    );
+   }
 }
