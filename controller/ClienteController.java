@@ -8,7 +8,11 @@ import service.ClienteService;
 
 public class ClienteController {
 
-    private ClienteService clienteService = new ClienteService();
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     public void gerenciarClientes(Scanner scanner) {
         int opcao = -1;
@@ -53,25 +57,22 @@ public class ClienteController {
 
         } while (opcao != 0);
     }
-    
+
     private void cadastrarCliente(Scanner scanner) {
         System.out.println("\n--- Cadastro de Novo Cliente ---");
-        
+
         System.out.print("Digite o nome do cliente: ");
         String nome = scanner.nextLine();
-        
-        // **MODIFICADO**: Usa o método de validação para o CPF
+
         String cpf = lerInputNumericoValidado(scanner, "Digite o CPF (11 dígitos, somente números): ", 11);
 
-        // **NOVA VALIDAÇÃO**: Verifica se o CPF já existe
         if (clienteService.buscarPorCpf(cpf) != null) {
             System.out.println("Erro: Já existe um cliente cadastrado com este CPF.");
-            return; // Encerra a tentativa de cadastro
+            return;
         }
 
-        // **MODIFICADO**: Usa o método de validação para o Telefone
         String telefone = lerInputNumericoValidado(scanner, "Digite o telefone (11 dígitos com DDD, somente números): ", 11);
-        
+
         Cliente novoCliente = new Cliente(nome, cpf, telefone);
         clienteService.salvar(novoCliente);
 
@@ -93,7 +94,6 @@ public class ClienteController {
 
     private void atualizarCliente(Scanner scanner) {
         System.out.println("\n--- Atualização de Cliente ---");
-        // **MODIFICADO**: Usa o método de validação para encontrar o CPF
         String cpf = lerInputNumericoValidado(scanner, "Digite o CPF do cliente que deseja atualizar (11 dígitos): ", 11);
 
         Cliente clienteExistente = clienteService.buscarPorCpf(cpf);
@@ -104,15 +104,14 @@ public class ClienteController {
         }
 
         System.out.println("Dados atuais: " + clienteExistente);
-        
+
         System.out.print("Digite o novo nome do cliente: ");
         String novoNome = scanner.nextLine();
-        
-        // **MODIFICADO**: Usa o método de validação para o novo Telefone
+
         String novoTelefone = lerInputNumericoValidado(scanner, "Digite o novo telefone (11 dígitos com DDD): ", 11);
 
         boolean atualizou = clienteService.atualizar(cpf, novoNome, novoTelefone);
-        
+
         if (atualizou) {
             System.out.println("Cliente atualizado com sucesso!");
         }
@@ -120,7 +119,6 @@ public class ClienteController {
 
     private void removerCliente(Scanner scanner) {
         System.out.println("\n--- Remoção de Cliente ---");
-        // **MODIFICADO**: Usa o método de validação para encontrar o CPF
         String cpf = lerInputNumericoValidado(scanner, "Digite o CPF do cliente que deseja remover (11 dígitos): ", 11);
 
         boolean removeu = clienteService.removerPorCpf(cpf);
@@ -132,7 +130,6 @@ public class ClienteController {
         }
     }
 
-    // --- NOSSO NOVO MÉTODO AUXILIAR ---
     private String lerInputNumericoValidado(Scanner scanner, String prompt, int tamanhoExato) {
         String input;
         while (true) {

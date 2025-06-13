@@ -1,126 +1,137 @@
 package controller;
 
-import utils.Log;
-import utils.ArquivoUtil;
-import model.Reserva;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import model.Cliente;
+import model.Quarto;
+import service.ClienteService;
+import service.QuartoService;
 
 public class ReservaController {
-    private ArrayList<Reserva> reservas = new ArrayList<>();
-    private int proximoId = 1;
+
+    private final ClienteService clienteService;
+    private final QuartoService quartoService;
+
+    public ReservaController(ClienteService clienteService, QuartoService quartoService) {
+        this.clienteService = clienteService;
+        this.quartoService = quartoService;
+    }
 
     public void gerenciarReservas(Scanner scanner) {
-        int opcao;
+        int opcao = -1;
+
         do {
-            System.out.println("\n--- Menu de Reservas ---");
-            System.out.println("1 - Cadastrar reserva");
-            System.out.println("2 - Listar reservas");
-            System.out.println("3 - Editar reserva");
-            System.out.println("4 - Excluir reserva");
+            System.out.println("\n--- Gerenciamento de Reservas ---");
+            System.out.println("1 - Fazer Reserva");
+            System.out.println("2 - Listar Reservas");
+            System.out.println("3 - Cancelar Reserva");
             System.out.println("0 - Voltar");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
 
-            switch (opcao) {
-                case 1:
-                    System.out.print("CPF do cliente: ");
-                    String cpfCliente = scanner.nextLine();
-                    System.out.print("ID do quarto: ");
-                    int quartoId = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Data de entrada: ");
-                    String entrada = scanner.nextLine();
-                    System.out.print("Data de saída: ");
-                    String saida = scanner.nextLine();
-                    cadastrarReserva(cpfCliente, quartoId, entrada, saida); 
-                    break;
-                case 2:
-                    listarReservas();
-                    break;
-                case 3:
-                    System.out.print("ID da reserva: ");
-                    int idEditar = scanner.nextInt();
-                    scanner.nextLine(); // importante para limpar buffer
-                    System.out.print("Novo CPF do cliente: ");
-                    String novoCpf = scanner.nextLine(); 
-                    System.out.print("Novo ID do quarto: ");
-                    int novoQuarto = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Nova data de entrada: ");
-                    String novaEntrada = scanner.nextLine();
-                    System.out.print("Nova data de saída: ");
-                    String novaSaida = scanner.nextLine();
-                    editarReserva(idEditar, novoCpf, novoQuarto, novaEntrada, novaSaida); 
-                    break;
-                case 4:
-                    System.out.print("ID da reserva a excluir: ");
-                    int idExcluir = scanner.nextInt();
-                    excluirReserva(idExcluir);
-                    break;
-                case 0:
-                    System.out.println("Voltando ao menu principal...");
-                    break;
-                default:
-                    System.out.println("Opção inválida.");
+                switch (opcao) {
+                    case 1:
+                        fazerReserva(scanner);
+                        break;
+                    case 2:
+                        listarReservas();
+                        break;
+                    case 3:
+                        cancelarReserva(scanner);
+                        break;
+                    case 0:
+                        System.out.println("Voltando ao menu principal...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Digite um número.");
             }
+
         } while (opcao != 0);
     }
 
-    public void cadastrarReserva(String cpfCliente, int idQuarto, String entrada, String saida) { 
-        Reserva r = new Reserva(proximoId, cpfCliente, idQuarto, entrada, saida); // ALTERADO
-        reservas.add(r);
-        System.out.println("Reserva cadastrada com sucesso!");
-        Log.registrar("Reserva cadastrada: ID " + r.getId());
-        proximoId++;
-        ArquivoUtil.salvarReservas(reservas);
+    private void fazerReserva(Scanner scanner) {
+        System.out.print("Digite o CPF do cliente: ");
+        String cpf = scanner.nextLine();
+
+        Cliente cliente = clienteService.buscarPorCpf(cpf);
+
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado. Certifique-se de que o CPF está correto e o cliente foi cadastrado.");
+            return;
+        }
+
+        List<Quarto> disponiveis = quartoService.listarQuartosDisponiveis();
+
+        if (disponiveis.isEmpty()) {
+            System.out.println("Não há quartos disponíveis no momento.");
+            return;
+        }
+
+        System.out.println("\n--- Quartos Disponíveis ---");
+        for (Quarto q : disponiveis) {
+            System.out.println("Número: " + q.getNumero() + " - Tipo: " + q.getClass().getSimpleName());
+        }
+
+        System.out.print("Digite o número do quarto que deseja reservar: ");
+        int numero = Integer.parseInt(scanner.nextLine());
+
+        Quarto quarto = quartoService.buscarQuartoPorNumero(numero);
+
+        if (quarto == null) {
+            System.out.println("Quarto não encontrado.");
+            return;
+        }
+
+        if (quarto.isOcupado()) {
+            System.out.println("Este quarto já está ocupado.");
+            return;
+        }
+
+        quarto.ocupar();
+        quartoService.atualizarQuarto(quarto);
+        System.out.println("Reserva realizada com sucesso para o cliente " + cliente.getNome() + " no quarto " + numero + ".");
     }
 
-    public void listarReservas() {
-        if (reservas.isEmpty()) {
-            System.out.println("Nenhuma reserva cadastrada.");
-        } else {
-            for (Reserva r : reservas) {
-                System.out.println(r);
+    private void listarReservas() {
+        List<Quarto> quartos = quartoService.listarTodosOsQuartos();
+        System.out.println("\n--- Reservas Atuais ---");
+
+        boolean temReserva = false;
+        for (Quarto q : quartos) {
+            if (q.isOcupado()) {
+                System.out.println("Quarto " + q.getNumero() + " - Ocupado");
+                temReserva = true;
             }
         }
-    }
 
-    public Reserva buscarPorId(int id) {
-        for (Reserva r : reservas) {
-            if (r.getId() == id) {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    public void editarReserva(int id, String novoCpf, int novoQuarto, String novaEntrada, String novaSaida) { 
-        Reserva r = buscarPorId(id);
-        if (r != null) {
-            r.setCpfCliente(novoCpf); 
-            r.setIdQuarto(novoQuarto);
-            r.setDataEntrada(novaEntrada);
-            r.setDataSaida(novaSaida);
-            System.out.println("Reserva atualizada com sucesso!");
-            Log.registrar("Reserva editada: ID " + r.getId());
-            ArquivoUtil.salvarReservas(reservas);
-        } else {
-            System.out.println("Reserva não encontrada.");
+        if (!temReserva) {
+            System.out.println("Nenhuma reserva realizada.");
         }
     }
 
-    public void excluirReserva(int id) {
-        Reserva r = buscarPorId(id);
-        if (r != null) {
-            reservas.remove(r);
-            System.out.println("Reserva excluída com sucesso!");
-            Log.registrar("Reserva excluída: ID " + r.getId());
-            ArquivoUtil.salvarReservas(reservas);
-        } else {
-            System.out.println("Reserva não encontrada.");
+    private void cancelarReserva(Scanner scanner) {
+        System.out.print("Digite o número do quarto que deseja cancelar a reserva: ");
+        int numero = Integer.parseInt(scanner.nextLine());
+
+        Quarto quarto = quartoService.buscarQuartoPorNumero(numero);
+
+        if (quarto == null) {
+            System.out.println("Quarto não encontrado.");
+            return;
         }
+
+        if (!quarto.isOcupado()) {
+            System.out.println("Este quarto já está disponível. Não há reserva para cancelar.");
+            return;
+        }
+
+        quarto.desocupar();
+        quartoService.atualizarQuarto(quarto);
+        System.out.println("Reserva do quarto " + numero + " cancelada com sucesso.");
     }
 }

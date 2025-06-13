@@ -10,6 +10,16 @@ import model.QuartoStandard;
 
 public class QuartoService {
     private List<Quarto> quartos = new ArrayList<>();
+
+    public void atualizarQuarto(Quarto quartoAtualizado) {
+    for (int i = 0; i < quartos.size(); i++) {
+        if (quartos.get(i).getNumero() == quartoAtualizado.getNumero()) {
+            quartos.set(i, quartoAtualizado);
+            return;
+        }
+    }
+}
+
 public QuartoService() {
     quartos.add(new QuartoSimples(101));
     quartos.add(new QuartoSimples(102));
@@ -32,6 +42,7 @@ public Quarto buscarQuartoPorNumero(int numero) {
     return quarto;
             }
         }
+        
     return null; // Retorna null se não encontrar
     }
 }

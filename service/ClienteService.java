@@ -8,6 +8,7 @@ public class ClienteService {
 
     private List<Cliente> listaDeClientes = new ArrayList<>();
 
+    
     public void salvar(Cliente cliente) {
         listaDeClientes.add(cliente);
     }
@@ -16,13 +17,15 @@ public class ClienteService {
         return listaDeClientes;
     }
      public Cliente buscarPorCpf(String cpf) {
-        for (Cliente cliente : listaDeClientes) {
-            if (cliente.getCpf().equals(cpf)) {
-                return cliente; // Retorna o cliente encontrado
-            }
+    if (cpf == null) return null;
+    cpf = cpf.trim();
+    for (Cliente cliente : listaDeClientes) {
+        if (cliente.getCpf() != null && cliente.getCpf().trim().equalsIgnoreCase(cpf)) {
+            return cliente;
         }
-        return null; // Retorna null se o loop terminar sem encontrar
     }
+    return null;
+}
 
     public boolean atualizar(String cpf, String novoNome, String novoTelefone) {
         Cliente clienteParaAtualizar = buscarPorCpf(cpf);

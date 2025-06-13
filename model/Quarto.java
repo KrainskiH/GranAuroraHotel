@@ -28,7 +28,16 @@ public abstract class Quarto {
     public abstract String getTipo();
     public abstract String getDescricao();
     public abstract double getPrecoDiaria();
+    
+private boolean disponivel = true;
 
+public boolean isDisponivel() {
+    return disponivel;
+}
+
+public void setDisponivel(boolean disponivel) {
+    this.disponivel = disponivel;
+}
 @Override
 public String toString() {
     return String.format(

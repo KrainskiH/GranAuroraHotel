@@ -3,19 +3,25 @@ package view;
 import controller.ClienteController;
 import controller.QuartoController;
 import controller.ReservaController;
-import java.util.InputMismatchException; // Importar a exceção
+import service.ClienteService;
+import service.QuartoService;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
 
     private final Scanner scanner = new Scanner(System.in);
-    private final ClienteController clienteController = new ClienteController();
-    private final QuartoController quartoController = new QuartoController();
-    private final ReservaController reservaController = new ReservaController();
 
-    /**
-     * Exibe o menu principal e gerencia a navegação do usuário.
-     */
+    // Instâncias compartilhadas de serviços
+    private final ClienteService clienteService = new ClienteService();
+    private final QuartoService quartoService = new QuartoService();
+
+    // Controllers usando as mesmas instâncias de serviço
+    private final ClienteController clienteController = new ClienteController(clienteService);
+    private final QuartoController quartoController = new QuartoController(); // Supondo que não precisa de serviço
+    private final ReservaController reservaController = new ReservaController(clienteService, quartoService);
+
     public void exibirMenu() {
         int opcao = -1;
 
@@ -29,7 +35,7 @@ public class Menu {
 
             try {
                 opcao = scanner.nextInt();
-                scanner.nextLine(); // limpa o buffer do newline
+                scanner.nextLine();
 
                 switch (opcao) {
                     case 1:
@@ -49,32 +55,23 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Erro: Entrada inválida. Por favor, digite um número inteiro.");
-                scanner.nextLine(); // Limpa a entrada inválida do buffer
-                opcao = -1; // Reseta a opção para garantir a continuidade do loop
+                scanner.nextLine();
+                opcao = -1;
             }
 
         } while (opcao != 0);
 
-        scanner.close(); // Boa prática: fechar o scanner ao final do uso
+        scanner.close();
     }
 
-    /**
-     * Direciona para o submenu de gerenciamento de clientes.
-     */
     private void menuClientes() {
         clienteController.gerenciarClientes(scanner);
     }
 
-    /**
-     * Direciona para o submenu de gerenciamento de quartos.
-     */
     private void menuQuartos() {
         quartoController.gerenciarQuartos(scanner);
     }
 
-    /**
-     * Direciona para o submenu de gerenciamento de reservas.
-     */
     private void menuReservas() {
         reservaController.gerenciarReservas(scanner);
     }
