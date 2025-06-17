@@ -8,7 +8,7 @@ CRUD de Reservas,
 Relacionamento entre Cliente, Quarto e Reserva,
 
 Herança-
-Polimorfismo (sobrecarga e sobrescrita),
+Polimorfismo (sobrescrita),
 Encapsulamento,
 Classe abstrata,
 Interface,
